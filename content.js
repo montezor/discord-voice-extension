@@ -101,8 +101,9 @@
 
         const blob = new Blob(audioChunks, { type: mimeType });
         const timestamp = Date.now();
-        const file = new File([blob], `voice-message-${timestamp}.webm`, {
-          type: mimeType,
+        // Use .ogg extension so Discord renders an inline audio player
+        const file = new File([blob], `voice-message-${timestamp}.ogg`, {
+          type: 'audio/ogg',
           lastModified: timestamp,
         });
 
