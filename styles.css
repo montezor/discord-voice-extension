@@ -1,0 +1,69 @@
+/* Discord Voice Recorder Button */
+.dvr-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.dvr-record-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: #2b2d31;
+  color: #b5bac1;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  padding: 0;
+  margin: 0 2px;
+  line-height: 1;
+}
+
+.dvr-record-btn:hover {
+  background: #383a40;
+  color: #dbdee1;
+}
+
+/* Recording state */
+.dvr-record-btn.dvr-recording {
+  background: #da373c;
+  color: #fff;
+  animation: dvr-pulse 1.2s ease-in-out infinite;
+}
+
+.dvr-record-btn.dvr-recording:hover {
+  background: #c23034;
+  color: #fff;
+}
+
+@keyframes dvr-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Timer badge */
+.dvr-timer {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #da373c;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 6px;
+  font-family: 'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  pointer-events: none;
+  min-width: 16px;
+  text-align: center;
+  line-height: 14px;
+  display: none;
+}
+
+.dvr-timer.dvr-visible {
+  display: block;
+}
