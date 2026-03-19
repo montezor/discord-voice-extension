@@ -84,10 +84,13 @@
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
       audioChunks = [];
-      // Prefer webm/opus, fall back to whatever is available
-      const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
-        ? 'audio/webm;codecs=opus'
-        : 'audio/webm';
+      // Prefer ogg/opus for Discord inline playback, fall back to webm
+      let mimeType = 'audio/webm;codecs=opus';
+      if (MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) {
+        mimeType = 'audio/ogg;codecs=opus';
+      } else if (MediaRecorder.isTypeSupported('audio/ogg')) {
+        mimeType = 'audio/ogg';
+      }
 
       mediaRecorder = new MediaRecorder(stream, { mimeType });
 
@@ -101,11 +104,14 @@
 
         const blob = new Blob(audioChunks, { type: mimeType });
         const timestamp = Date.now();
-        // Use .ogg extension so Discord renders an inline audio player
-        const file = new File([blob], `voice-message-${timestamp}.ogg`, {
+        // Use .ogg extension and type for Discord inline audio player
+        const isOgg = mimeType.includes('ogg');
+        const ext = isOgg ? 'ogg' : 'ogg'; // always .ogg for Discord compatibility
+        const file = new File([blob], `voice-message-${timestamp}.${ext}`, {
           type: 'audio/ogg',
           lastModified: timestamp,
         });
+        console.log('[DVR] Recorded with mimeType:', mimeType, 'file:', file.name, 'size:', file.size);
 
         uploadFile(file);
         resetUI(btn, timer);
